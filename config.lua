@@ -6,31 +6,33 @@ CHIPS[1649453] = {"DP",11}
 CHIPS[494215] = {"Dm",9,4}
 CHIPS[3333] = {"TS",20}
 
-D = {
+D = D or {
 ["name"] = name or "?",
-["type"] = CHIPS[g_chipid()][1] or NM,
-["pins"] = CHIPS[g_chipid()][2], --
-["LED"] = CHIPS[g_chipid()][3],  -- pin that controls LED
-["ID"] = "?",
+["type"] = CHIPS[node.chipid()][1] or NM,
+["pins"] = CHIPS[node.chipid()][2], --
+["LED"] = CHIPS[node.chipid()][3],  -- pin that controls LED
+["ID"] = CHIPS[node.chipid()][1] .."_".. string.sub(string.gsub(wifi.sta.getmac(), ":", ""),7,12),
 ["tmpr"]  = 0,      -- last temperature sample
 ["heap_min"] = heap_min or 4000 ,-- minimum heapsize before processing MQTT packet to prevent overflow
 ["t_cal"] = t_cal or 0,
 ["s_io"] = scrn_io or false,  -- video mode /  true means IO screen only
 ["mqtt"] = false        -- state of the MQTT connection
-}
+} 
+
 t_cal, name, scrn_io, heap_min = nil, nil, nil, nil
 
 CHIPS = nil -- don't need this afterwards
 
 -- set system variables/registers / these may be set in cred.lua
 -- timers
-TMR={
+TMR = TMR or {
 ["tmpr"] = {["n"] = 3, ["t"] = updt_t or 10101, ["f"] = nil}, -- n(number), t(timer interval), f(function)
 ["scrn"] = {["n"] = 4, ["t"] = updt_s or 5012,  ["tio"] = updt_sio or 333, ["f"] = nil},
 ["rp"] = {["n"] = 5, ["t"] = updt_r or 212, ["f"] = nil},
 ["dly"] = {["n"] = 6, ["t"] = nil},
 ["heap"] = {["n"] = 0, ["t"] = nil},
 }
+
 updt_t, updt_s, updt_r, updt_sio = nil, nil, nil, nil
 
 -- Configure GPIO PIN States
@@ -130,13 +132,13 @@ PINS_CONFIG = nil
 
 -- MQTT Topics
 Tpre = Tpre or 'MyTopic'
-S_TOP = {
+S_TOP = S_TOP or {
     register =  Tpre.."register",
     cmd =  Tpre,                 -- ID will be added during initialziation
     status =    Tpre.."status",
 }
 
-P_TOP = {
+P_TOP = P_TOP or  {
    register =  Tpre.."register",
    data = Tpre,
 --    commands =  "/HL/commands",

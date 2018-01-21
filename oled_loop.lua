@@ -73,7 +73,7 @@ function d_id(l) -- draw id
 end
 
 function d_ip(y)
-	local ip = g_wifi_sta()
+	local ip = wifi.sta.getip()
   disp:drawStr(0,y, string.sub(ip,1,11))
   disp:drawLine(0, y+9, 40, y+9)
     disp:drawLine(40, y+9, 40, y+19)

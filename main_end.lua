@@ -10,7 +10,6 @@ tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, function()
 	p_line(_,_,"Clean complete, start timers")
 	tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, 
 		function() 
-			startup = nil
 --			MQTT = nil
 --			AP = nil
 			if init_clean2 then init_clean2() end

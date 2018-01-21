@@ -7,7 +7,7 @@ PASSWORD="ThisIsGREEN!"
 WEB_CHECK="hoppellodge.remotewebaccess.com"
 Tpre = "/HL/"
 
-MQTT = {
+local MQTT = {
     ID ="rhoppel",
     PWD="maCmah0n",
 --    NAME="HS2",
@@ -48,7 +48,7 @@ PINS_CONFIG =  {
 --]]
 
 ---[[
-PINS_CONFIG =  {
+local PINS_CONFIG =  {
 [0] = {["m"] = gpio.OUTPUT,["w"]  = gpio.LOW },
 [1] = {["m"] = nil},     -- (UNAVAILABLE)  I2C SD1 / OLED 
 [2] = {["m"] = nil} ,    -- (UNAVAILABLE)  I2C SDL / OLED

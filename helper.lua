@@ -2,10 +2,12 @@ local fn,fp = "helper", {"0.4b","1/12/18","RLH"} if type(fver) == 'table' then f
 p_local_fver(fn,fp)
 
 -- make id a concatenation of devide and last 6 digits of MAC address
-function make_id() return D.type .."_".. string.sub(string.gsub(g_sta_mac(), ":", ""),7,12) end
+-- function make_id() return D.type .."_".. string.sub(string.gsub(wifi.sta.getmac(), ":", ""),7,12) end
 
-D.ID = make_id()
-make_id =  nil
+--D.ID = make_id()
+--make_id =  nil
+
+function tmr_rst(z,time) tmr.alarm(TMR[z].n, time or TMR[z].t, 1, TMR[z].f) end
 
 function dump(o,x)          -- dumps the table to stdio
    if type(o) == 'table' then
@@ -43,12 +45,12 @@ end
 function g_dinfo()
     local X = {}
     for k, v in pairs(D) do X[k] = v end
-    X.heap = g_heap()
-    X.chipid = g_chipid()
-    X.flashsize = g_flashsize()
-    X.flashid = g_flashid()
-    X.sta_mac = g_sta_mac()
-    X.ap_mac	= g_ap_mac()
+    X.heap = node.heap()
+    X.chipid =node.chipid()
+    X.flashsize = node.flashsize()
+    X.flashid = node.flashid()
+    X.sta_mac = wifi.sta.getmac()
+    X.ap_mac	=wifi.ap.getmac()
     X.ip = g_wifi(ap).ip
     local z,y = node.bootreason()
     X.bootreason_extnd = y
@@ -58,11 +60,11 @@ end
 function g_wifi(config)  -- updatea WiFi station (STA) or optionally AP parameters
     local ip, mask, gateway, ap_mac, sta_mac
     if config == 'ap' then 
-        ip, mask, gateway = g_wifi_ap() 
-        ap_mac = g_ap_mac()
+        ip, mask, gateway =wifi.ap.getip() 
+        ap_mac =wifi.ap.getmac()
     else
-        ip, mask, gateway = g_wifi_sta()
-        sta_mac = g_sta_mac()
+        ip, mask, gateway = wifi.sta.getip()
+        sta_mac = wifi.sta.getmac()
     end
 
     return {
@@ -144,6 +146,7 @@ function init_clean()
     p_sort_keys = nil
     pairsByKeys = nil
     init_clean = nil
+    startup = nil
 end
 
 function init_clean2()
