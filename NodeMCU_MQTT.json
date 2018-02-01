@@ -1,0 +1,510 @@
+[
+	{
+		"id": "c13190d.d73717",
+		"type": "mqtt out",
+		"z": "239ab431.8d6d0c",
+		"name": "",
+		"topic": "/HL/Dm_078a87/cmd",
+		"qos": "",
+		"retain": "",
+		"broker": "ab4296cb.3cede8",
+		"x": 445,
+		"y": 172.0000171661377,
+		"wires": []
+	},
+	{
+		"id": "bb89a5a5.4cf488",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/cmd",
+		"active": true,
+		"console": "true",
+		"complete": "payload",
+		"x": 852.8999404907227,
+		"y": 254.00006675720215,
+		"wires": []
+	},
+	{
+		"id": "c9f1dea6.5cb73",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "cmd",
+		"topic": "/HL/Dm_078a87/cmd",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 611.8999290466309,
+		"y": 267.0000305175781,
+		"wires": [
+			[
+				"bb89a5a5.4cf488"
+			]
+		]
+	},
+	{
+		"id": "5754dd15.cbd694",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "IO screen toggle",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"scrn_io\"}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 195.99987030029297,
+		"y": 109.00000190734863,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "dcf67765.51fb18",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p0 \"1\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"0\":1}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 157.8998794555664,
+		"y": 303.0000400543213,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "579dba58.963ad4",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p0 \"0\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"0\":0}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 159.99988174438477,
+		"y": 270.0000410079956,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "1103b9ae.dd68f6",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "tmpr",
+		"topic": "/HL/Dm_078a87/tmpr",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 608.9999809265137,
+		"y": 365.40005588531494,
+		"wires": [
+			[
+				"954c1244.5cd98"
+			]
+		]
+	},
+	{
+		"id": "954c1244.5cd98",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/tmpr",
+		"active": true,
+		"console": "true",
+		"complete": "payload",
+		"x": 853.9999847412109,
+		"y": 344.4000577926636,
+		"wires": []
+	},
+	{
+		"id": "ddacde70.5723b",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "ipins",
+		"topic": "/HL/Dm_078a87/ipins",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 607.9999809265137,
+		"y": 414.4000577926636,
+		"wires": [
+			[
+				"ba90510a.297d2"
+			]
+		]
+	},
+	{
+		"id": "ba90510a.297d2",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/ipins",
+		"active": true,
+		"console": "false",
+		"complete": "payload",
+		"x": 851.9999847412109,
+		"y": 387.40003204345703,
+		"wires": []
+	},
+	{
+		"id": "d599980a.fdd6d8",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p4 \"1\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"4\":1}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 157.89987564086914,
+		"y": 368.00003147125244,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "b02bf0f4.42b25",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p4 \"0\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"4\":0}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 159.9998779296875,
+		"y": 335.00003242492676,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "eb76c854.c11418",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p7 \"1\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"7\":1}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 155.89987564086914,
+		"y": 432.00003147125244,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "ed7c0d5d.d249",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p7 \"0\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"7\":0}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 157.9998779296875,
+		"y": 399.00003242492676,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "9929290c.5e4618",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p8 \"1\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"8\":1}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 155.89987564086914,
+		"y": 497.00003147125244,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "8b6e5a3b.cc0288",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "p8 \"0\"",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"pins_write\",\"pins\":{\"8\":0}}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 157.9998779296875,
+		"y": 464.00003242492676,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "8362aad6.5cb858",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "DEBUG toggle",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"DEBUG\"}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 195.89986419677734,
+		"y": 76,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "e1136e24.7d07e",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "reset",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"reset\"}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 164.8998680114746,
+		"y": 141.00000286102295,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "1fc00e76.4ac452",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "configuration",
+		"topic": "/HL/Dm_078a87/",
+		"qos": "0",
+		"broker": "ab4296cb.3cede8",
+		"x": 631.8999328613281,
+		"y": 218.0000295639038,
+		"wires": [
+			[
+				"c553a8f0.e5a488"
+			]
+		]
+	},
+	{
+		"id": "c553a8f0.e5a488",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/",
+		"active": true,
+		"console": "true",
+		"complete": "payload",
+		"x": 861.8999404907227,
+		"y": 213.0000286102295,
+		"wires": []
+	},
+	{
+		"id": "9c20c3f8.680c6",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "register",
+		"topic": "/HL/register",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 617.8998832702637,
+		"y": 169.00001525878906,
+		"wires": [
+			[
+				"1d766f78.d308c1"
+			]
+		]
+	},
+	{
+		"id": "1d766f78.d308c1",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "HL/register",
+		"active": true,
+		"console": "false",
+		"complete": "payload",
+		"x": 870.8998870849609,
+		"y": 172.99999046325684,
+		"wires": []
+	},
+	{
+		"id": "8282d202.93ff5",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "pins",
+		"topic": "/HL/Dm_078a87/pins",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 609.8998985290527,
+		"y": 322.0000410079956,
+		"wires": [
+			[
+				"60fb25f8.9e366c"
+			]
+		]
+	},
+	{
+		"id": "60fb25f8.9e366c",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/PINS",
+		"active": true,
+		"console": "false",
+		"complete": "payload",
+		"x": 853.89990234375,
+		"y": 295.00001525878906,
+		"wires": []
+	},
+	{
+		"id": "a6893464.0bc648",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "Dm_078a87/heap",
+		"active": true,
+		"console": "false",
+		"complete": "payload",
+		"x": 850.8998641967773,
+		"y": 440,
+		"wires": []
+	},
+	{
+		"id": "953bb49c.bbfe78",
+		"type": "mqtt in",
+		"z": "239ab431.8d6d0c",
+		"name": "heap",
+		"topic": "/HL/Dm_078a87/heap",
+		"qos": "2",
+		"broker": "ab4296cb.3cede8",
+		"x": 606.8998603820801,
+		"y": 467.00002574920654,
+		"wires": [
+			[
+				"a6893464.0bc648"
+			]
+		]
+	},
+	{
+		"id": "4113e0af.dbfbd",
+		"type": "inject",
+		"z": "239ab431.8d6d0c",
+		"name": "heap",
+		"topic": "/HL/Dm_078a87/cmd",
+		"payload": "{\"cmd\":\"heap\"}",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"x": 162.8998680114746,
+		"y": 175.00000381469727,
+		"wires": [
+			[
+				"c13190d.d73717"
+			]
+		]
+	},
+	{
+		"id": "1680c8cc.cae757",
+		"type": "ui_button",
+		"z": "239ab431.8d6d0c",
+		"name": "",
+		"group": "b63d467a.9be628",
+		"order": 0,
+		"width": 0,
+		"height": 0,
+		"passthru": false,
+		"label": "button",
+		"color": "",
+		"bgcolor": "",
+		"icon": "",
+		"payload": "",
+		"payloadType": "str",
+		"topic": "",
+		"x": 171.99987411499023,
+		"y": 580.2000160217285,
+		"wires": [
+			[
+				"8abacb6d.243988"
+			]
+		]
+	},
+	{
+		"id": "8abacb6d.243988",
+		"type": "debug",
+		"z": "239ab431.8d6d0c",
+		"name": "",
+		"active": true,
+		"console": "false",
+		"complete": "false",
+		"x": 533.9999008178711,
+		"y": 587,
+		"wires": []
+	},
+	{
+		"id": "ab4296cb.3cede8",
+		"type": "mqtt-broker",
+		"z": "",
+		"broker": "Hs2",
+		"port": "1883",
+		"clientid": "",
+		"usetls": false,
+		"compatmode": true,
+		"keepalive": "60",
+		"cleansession": true,
+		"willTopic": "",
+		"willQos": "0",
+		"willPayload": "",
+		"birthTopic": "",
+		"birthQos": "0",
+		"birthPayload": ""
+	},
+	{
+		"id": "b63d467a.9be628",
+		"type": "ui_group",
+		"z": "",
+		"name": "RickButton",
+		"tab": "1310ca0e.9001d6",
+		"disp": true,
+		"width": "6"
+	},
+	{
+		"id": "1310ca0e.9001d6",
+		"type": "ui_tab",
+		"z": "",
+		"name": "TestX",
+		"icon": "dashboard"
+	}
+]

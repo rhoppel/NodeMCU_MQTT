@@ -34,9 +34,10 @@ function  scrn_io()
 	else 
 		tmr_rst('scrn')
 	end
+	print("Display IO only:",D.s_io )
 end
 
-function debug2() dbg = not dbg end
+function debug2() dbg = not dbg ; print("debug mode:", dbg) end
 
 function heap() mqtt_pub_smsg(P_TOP.data,'heap',node.heap()) end 
 

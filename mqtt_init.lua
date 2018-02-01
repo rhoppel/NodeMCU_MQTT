@@ -18,7 +18,7 @@ mq:on("offline", function(client) D.mqtt = false;print ("MQTT: offline") end)
 
 -- on publish message receive event
 mq:on("message", function(client, topic, data) 
-  p_line(80,_,"MQTT Recvd:"..topic) ; print( node.heap(), data ) 
+  p_line(_,_,"MQTT Recvd:"..topic) ; print( node.heap(), data ) 
   if data ~= nil and node.heap() >  D.heap_min
   then   
     local X = sjson.decode(data) 

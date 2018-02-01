@@ -77,7 +77,8 @@ function d_ip(y)
   disp:drawStr(0,y, string.sub(ip,1,11))
   disp:drawLine(0, y+9, 40, y+9)
     disp:drawLine(40, y+9, 40, y+19)
-	disp:drawStr(41,y+10, string.sub(ip,#ip-3,#ip) )
+--	disp:drawStr(41,y+10, string.sub(ip,#ip-3,#ip) )
+	disp:drawStr(41,y+10, string.match(string.sub(ip,#ip-3,#ip),'%.%d*%d' ))
 end
 
 function d_pins(y)
