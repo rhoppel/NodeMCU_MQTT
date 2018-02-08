@@ -11,7 +11,7 @@
 -- Example:
 -- dofile("u8g_drawloop.lua")
 ------------------------------------------------------------------------------
-local fn,fp = "oled_loop", {"0.3","1/12/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "oled_loop", {"0.4","1/25/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 ---[[ SYSTEM INITIALIZED in MAIN

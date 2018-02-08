@@ -19,7 +19,7 @@ tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, function()
 			tmr_rst('rp')
 			tmr_rst('tmpr')
 			tmr_rst('scrn')
-			TMR.heap.t, TMR.heap.f = 60000, heap
+			TMR.heap.t, TMR.heap.f = 60000, node.heap
 			tmr_rst('heap')
 
 		end)

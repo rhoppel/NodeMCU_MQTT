@@ -1,4 +1,4 @@
-local fn,fp = "helper_io", {"0.3","1/5/18","RLH"} ;fver[fn] = fp ; --p_local_fver(fn,fp)
+local fn,fp = "helper_io", {"0.4","2/1/18","RLH"} ;fver[fn] = fp ; --p_local_fver(fn,fp)
 --local fn,fp = "helper_io", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --[[
 function p_line(b,c,x)  -- prints a line to the output

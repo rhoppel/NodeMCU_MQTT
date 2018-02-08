@@ -1,5 +1,5 @@
 --if OS == nil then OS, fver, OSDIR = true, {}, "Z:\\Lua\\MQTT_HL\\" ; print("running on OS") end  -- initialize fver if running on OS
-local fn,fp = "main", {"0.3c","1/11/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "main", {"0.4","1/21/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 -- install helper_io 
     -- for OS testing
 function p_local_fver(fn,fp)  -- prints filename and version to output

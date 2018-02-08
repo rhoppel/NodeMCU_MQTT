@@ -1,4 +1,4 @@
-local fn,fp = "read_temp", {"0.1","1/7/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "read_temp", {"0.2","1/18/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp)
 
 local ow_pin = ow_pin or '2'      -- GPIO pin to

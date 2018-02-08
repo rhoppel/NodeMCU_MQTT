@@ -1,4 +1,4 @@
-local fn,fp = "config", {"0.6","1/11/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "config", {"0.8","2/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
 CHIPS = {}
@@ -105,27 +105,27 @@ PINS_CONFIG = PINS_CONFIG or {
 }
 --]]
 --INPUT, OUTPUT, INT, OPENDRAIN, LOW, HIGH, PULLUP = 0, 1, 2, 3, 0, 1, 1
-local function pin_init(T,U,npins)  -- PIN CONSTRUCTOR
+function pins_init(T,U,npins)  -- PIN CONSTRUCTOR
         for i = 0, npins -1  do  
-        T[i] = {}  -- a pin with only an empty set means that pin is not available for processing
+                T[i] = {}  -- a pin with only an empty set means that pin is not available for processing
 		if U[i] and  U[i].m              -- only process additional info if mode is specified
 		then 
-            T[i].m  = U[i].m	-- m (mode) {"","OUTPUT(1)","OPENDRAIN(3)","INPUT(0)","INT(2)"}
-            if T[i].m == gpio.INPUT then T[i].r  = 0 end  -- r (read state) {"0","1"}
-            if T[i].m == gpio.INT then T[i].r  = 0 end  -- r (read state) {"0","1"}
-            T[i].w    = U[i].w	-- w (write) {"LOW","HIGH"} 
-            T[i].pu   = U[i].pu	-- p (pullup type) {("PULLUP(1)"), (FLOAT(0))(default)}
-            T[i].t    = U[i].t	-- t (trigger type) {"up", "down", "both", "low", "high"}
-            T[i].pwm  = U[i].pwm -- pwm modulation on/off
-            T[i].freq = U[i].freq -- pwm frequency (0 - 1000 Hz)
-            T[i].duty = U[i].duty -- duty cycle (0-1024)		
-        end
+                        T[i].m  = U[i].m	-- m (mode) {"","OUTPUT(1)","OPENDRAIN(3)","INPUT(0)","INT(2)"}
+                        if T[i].m == gpio.INPUT then T[i].r  = 0 end  -- r (read state) {"0","1"}
+                        if T[i].m == gpio.INT then T[i].r  = 0 end  -- r (read state) {"0","1"}
+                        T[i].w    = U[i].w	-- w (write) {"LOW","HIGH"} 
+                        T[i].pu   = U[i].pu	-- p (pullup type) {("PULLUP(1)"), (FLOAT(0))(default)}
+                        T[i].t    = U[i].t	-- t (trigger type) {"up", "down", "both", "low", "high"}
+                        T[i].pwm  = U[i].pwm -- pwm modulation on/off
+                        T[i].freq = U[i].freq -- pwm frequency (0 - 1000 Hz)
+                        T[i].duty = U[i].duty -- duty cycle (0-1024)		
+                end
 	end
 end  
 
 PINS = {}
-pin_init(PINS, PINS_CONFIG,D.pins)
-pin_init = nil 
+pins_init(PINS, PINS_CONFIG,D.pins)
+--pin_init = nil 
 PINS_CONFIG = nil
 
 --if D.pina > 0  then print("> GPIO Pins Initialized") else print("!!! GPIO Pins NOT Initialized")end

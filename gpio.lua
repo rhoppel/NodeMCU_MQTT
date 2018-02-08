@@ -1,4 +1,4 @@
- local fn,fp = "gpio", {"0.5a","1/12/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+ local fn,fp = "gpio", {"0.6a","2/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
  
 local updt_r = updt_r or 230  -- gpio update
@@ -41,6 +41,7 @@ function pins_rw()
 				local x =  T[i].r
 				T[i].r = gpio.read(i)
 				r_chng = x ~= T[i].r or r_chng
+				-- report only pin changes
 			elseif m == gpio.OUTPUT or m == gpio.OPENDRAIN then
 				gpio.write(i,T[i].w)
 			end

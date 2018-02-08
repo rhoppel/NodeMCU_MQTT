@@ -1,4 +1,4 @@
-if fver then local fn,fp = "mqtt_init", {"0.3a","1/5/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
+if fver then local fn,fp = "mqtt_init", {"0.4","1/21/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
 --local fn,fp = "mqtt_init", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
