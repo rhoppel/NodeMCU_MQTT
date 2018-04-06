@@ -1,4 +1,4 @@
-if fver then local fn,fp = "mqtt_init", {"0.4","1/21/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
+if fver then local fn,fp = "mqtt_init", {"0.5","4/5/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
 --local fn,fp = "mqtt_init", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
@@ -63,7 +63,7 @@ mq:connect(MQTT.IP, MQTT.PORT, 0, function(client)
     
  for _,topic in pairs(P_TOP) do
     print("MQTT Publish:\t\t", topic, "\t data sent")
-    local msg = sjson.encode({D.ID, "register", g_dinfo()})
+    local msg = sjson.encode({D.ID, g_dinfo()})
     client:publish(topic, msg, 0, 0, function(client) print("MQTT Publish:","\t\tdata received"); D.mqtt = true end)   -- Turn om MQR to enable further MQTT 
  end
 end,

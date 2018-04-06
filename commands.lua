@@ -1,23 +1,27 @@
-local fn,fp = "commands", {"0.6a","2/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "commands", {"0.7a","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 function cmd_process(C)
+--	D.heap = node.heap()
 	if type(C.cmd) == 'string' then 
-		if 	   C.cmd == "pins_config" then pins_init(PINS,C.pins,D.pins)
+		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins)
 		elseif C.cmd == "pins" then mqtt_pub_smsg(P_TOP.data,'pins',PINS)
+		elseif C.cmd == "device" then mqtt_pub_smsg(P_TOP.data,'',{D.ID,D})
 		elseif C.cmd == "reset" then node.reset()
 		elseif C.cmd == "pins_write" then pins_write(C.pins)
 		elseif C.cmd == "scrn_io" then scrn_io()
-		elseif C.cmd == "DEBUG" then debug2()
-		elseif C.cmd == "heap" then mqtt_pub_smsg(P_TOP.data,'heap',node.heap())
-		elseif C.cmd == "t_cal" then D.tcal = C.t_cal 
+		elseif C.cmd == "DEBUG" then dbg = not dbg ; D.dbg = dbg 
+
+		elseif C.cmd == "t_cal" then D.t_cal = C.t_cal 
 --[[
+		elseif C.cmd == "heap" then mqtt_pub_smsg(P_TOP.data,'heap',D.heap)
 		elseif C.cmd == "adc_get" then adc_get() 
 		elseif C.cmd == "uart_send" then pwm(C.pl)
 		elseif C.cmd == "uart_config" then pwm(C.pins)
 --]]
 		else
-		print(C.cmd, "command not found"); mqtt_pub_smsg(P_TOP.data,"error",C.cmd.." command not found")
+		print(C.cmd, "command not found"); 
+		mqtt_pub_error("[commands] \'"..C.cmd.."\' command not implemented")
 		end
     end
 end
@@ -43,17 +47,40 @@ function pins_write(X)
         if PINS[kk].m == gpio.OUTPUT or PINS[kk].m == gpio.OPENDRAIN then
 			if dbg then print(string.format("p[%s] was:%s now:%s",kk, PINS[kk].w, v )) end
 			PINS[kk].w = v
-        end
+		else 
+			mqtt_pub_error("[commands] pin:"..kk.." is not a output")
+		end
     end
 end
 
-
+function pins_config(T,U)  -- PIN CONSTRUCTOR
+	for k,v in pairs(U) do
+		local i = tonumber(k)
+		print("pins_config: i,U[i],U[i].m =",i,U[k],U[k].m)
+		if U[k] and  U[k].m              -- only process additional info if mode is specified
+			then 
+				T[i] = {}			-- clear previous pin state
+				T[i].m  = U[k].m	-- m (mode) {"","OUTPUT(1)","OPENDRAIN(3)","INPUT(0)","INT(2)"}
+				if T[i].m == gpio.INPUT then T[i].r  = 0 end  -- r (read state) {"0","1"}
+				if T[i].m == gpio.INT then T[i].r  = 0 end  -- r (read state) {"0","1"}
+				T[i].w    = U[k].w	-- w (write) {"LOW","HIGH"} 
+				T[i].pu   = U[k].pu	-- p (pullup type) {("PULLUP(1)"), (FLOAT(0))(default)}
+				T[i].t    = U[k].t	-- t (trigger type) {"up", "down", "both", "low", "high"}
+				T[i].pwm  = U[k].pwm -- pwm modulation on/off
+				T[i].freq = U[k].freq -- pwm frequency (0 - 1000 Hz)
+				T[i].duty = U[k].duty -- duty cycle (0-1024)
+			else
+				mqtt_pub_error("[commands] pin:"..k.." mode is not specified")		
+			end
+	end
+end  
 --  publish (MQTT) a simple JSON encoded message
 function mqtt_pub_smsg(topic,key,value)
 	if type(key)  == 'string' 	
 	then 
 		local x = {};
 		x[key] = value 
+		if key == '' then x = value end
 		local json = sjson.encode(x)
 		local t = topic..key
 		--local json = '{"'.. key .. ':",' .. value ..'}'
@@ -62,6 +89,10 @@ function mqtt_pub_smsg(topic,key,value)
 	else print("Error C.cmd is not a string")
 	end
 end  
+
+function mqtt_pub_error(msg)
+	mqtt_pub_smsg(P_TOP.data,"error",msg)
+end
 
 -- return a msg object from either Input or Outputs pins current PINS Object
 function pins_msg(T,w)  -- w = true if Output date is required  
@@ -78,3 +109,4 @@ function pins_msg(T,w)  -- w = true if Output date is required
     end
     return X
 end
+

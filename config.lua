@@ -1,9 +1,9 @@
-local fn,fp = "config", {"0.8","2/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "config", {"0.9a","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
 CHIPS = {}
-CHIPS[1649453] = {"DP",11}
-CHIPS[494215] = {"Dm",9,4}
+CHIPS[1649453] = {"D1P",11}
+CHIPS[494215] = {"D1m",9,4}
 CHIPS[3333] = {"TS",20}
 
 D = D or {
@@ -16,7 +16,8 @@ D = D or {
 ["heap_min"] = heap_min or 4000 ,-- minimum heapsize before processing MQTT packet to prevent overflow
 ["t_cal"] = t_cal or 0,
 ["s_io"] = scrn_io or false,  -- video mode /  true means IO screen only
-["mqtt"] = false        -- state of the MQTT connection
+["mqtt"] = false,        -- state of the MQTT connection
+["dbg"] = dbg or false        -- is the DEBUG state active?
 } 
 
 t_cal, name, scrn_io, heap_min = nil, nil, nil, nil
@@ -90,24 +91,24 @@ RST     Reset           RST
 --]]
 ---[[
 PINS_CONFIG = PINS_CONFIG or {
-[0] ={["m"] = nil}, -- (UNAVAILABLE) commenting this out produces the same result
-[1] = {["m"] = nil},     -- (UNAVAILABLE)  I2C SD1 / OLED 
-[2] = {["m"] = nil} ,    -- (UNAVAILABLE)  I2C SDL / OLED
-[3] = {["m"] = nil} ,    --  
-[4] = {["m"] = nil},  -- set inital write state
+[0] = {["m"] = nil},   -- (UNAVAILABLE) commenting this out produces the same result
+[1] = {["m"] = nil},   -- (UNAVAILABLE)  I2C SD1 / OLED 
+[2] = {["m"] = nil} ,  -- (UNAVAILABLE)  I2C SDL / OLED
+[3] = {["m"] = nil} ,  --  
+[4] = {["m"] = nil},   -- set inital write state
 [5] = {["m"] = nil},   -- set INTerrupt
 [5] = {["m"] = nil},   -- set trigger type for interrupt
-[6] = {["m"] = nil}, -- set INPUT nmode
-[7] = {["m"] = nil},       -- this means the pin mode can be manipualed later 
-[8] = {["m"] = nil}, -- UART1 RX / (UNAVAILABLE) unless this in un-commented
+[6] = {["m"] = nil},   -- set INPUT nmode
+[7] = {["m"] = nil},   -- this means the pin mode can be manipualed later 
+[8] = {["m"] = nil},   -- UART1 RX / (UNAVAILABLE) unless this in un-commented
 [9] = {["m"] = nil},   -- (UNAVAILABLE) unles this in un-commented
-[10] ={["m"] = nil},  -- (UNAVAILABLE) unles this in un-commented
+[10] ={["m"] = nil},   -- (UNAVAILABLE) unles this in un-commented
 }
 --]]
 --INPUT, OUTPUT, INT, OPENDRAIN, LOW, HIGH, PULLUP = 0, 1, 2, 3, 0, 1, 1
 function pins_init(T,U,npins)  -- PIN CONSTRUCTOR
         for i = 0, npins -1  do  
-                T[i] = {}  -- a pin with only an empty set means that pin is not available for processing
+                T[i] = T[i] or {}  -- a pin with only an empty set means that pin is not available for processing
 		if U[i] and  U[i].m              -- only process additional info if mode is specified
 		then 
                         T[i].m  = U[i].m	-- m (mode) {"","OUTPUT(1)","OPENDRAIN(3)","INPUT(0)","INT(2)"}

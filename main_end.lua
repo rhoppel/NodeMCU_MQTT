@@ -1,5 +1,5 @@
 p_line(_,'*','The following executes at the of the main.lua')
-dbg = true
+
 if p_fver then  p_fver() ; p_line() end
 
 --if p_status then p_line(_,_,'status'); p_status() end
@@ -19,6 +19,10 @@ tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, function()
 			tmr_rst('rp')
 			tmr_rst('tmpr')
 			tmr_rst('scrn')
+			pins_rw(true)
+			mqtt_pub_smsg(P_TOP.data,'pins',PINS)
+			mqtt_pub_smsg(P_TOP.data,'heap',node.heap())
+            mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
 			TMR.heap.t, TMR.heap.f = 60000, node.heap
 			tmr_rst('heap')
 

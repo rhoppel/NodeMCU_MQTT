@@ -1,9 +1,10 @@
-local fn,fp = "personality", {"0.4","2/1/18","RLH"} ; fver[fn] = fp
+local fn,fp = "personality", {"0.5","4/1/18","RLH"} ; fver[fn] = fp
 print(string.format("Load: %s.lua  Ver:%s %s %s \n" ,fn, fp[1], fp[2], fp[3])) 
 AP={
-SSID="HoppelLodge",
+--SSID="HoppelLodge",
+SSID="techDogs",
 PASSWORD="ThisIsGREEN!"
---SSID="LodgeDev",
+
 --PASSWORD="04386051"
 }
 WEB_CHECK="hoppellodge.remotewebaccess.com"
@@ -22,7 +23,7 @@ MQTT = {
 
 name = " Thing 2"  -- friendly name for device
 -- OVERRIDE VALUES in main
-dbg = true -- debug mode, show status on std output
+dbg = false -- debug mode, show status on std output
 local heap_min = 3000 -- minimum heapsize before processing MQTT packet to prevent overflow
 local heap_load = 6510 -- delay loading module if heap is < this value
 local scrn_io = false   -- screen mode/ show io pins only
