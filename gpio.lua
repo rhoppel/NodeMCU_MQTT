@@ -57,10 +57,7 @@ function pins_rw()
 	end
     return r_chng
 end 
---]]
 
-
----[[
  function pwm_updt(i)
 	local T = PINS
 	if T[i].pwm then 

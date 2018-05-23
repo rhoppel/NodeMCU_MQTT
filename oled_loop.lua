@@ -62,7 +62,7 @@ function d_fname(l)
   disp:drawFrame(0, l, 64, 15)
   disp:drawStr(5,l+3, D.name)
   if D.dbg then disp:drawTriangle(58,l,63,l,63,l+5) end 
-  if D.s_io then disp:drawTriangle(58,l+14,63,l+14,63,l+9) end
+  if D.screen then disp:drawTriangle(58,l+14,63,l+14,63,l+9) end
   if D.mqtt then disp:drawTriangle(6,l,0,l,0,l+5) end
 end
   
@@ -160,8 +160,15 @@ function drawMsg()
 end
 
 function screens()
-  if D.msg then drawDemo =  { drawStatus, drawPins, drawMsg }
-  else drawDemo =  { drawStatus, drawPins } end
+  local z = D.screen
+  if      z == 'cycle' and D.msg then drawDemo =  {drawStatus, drawPins, drawMsg }
+  elseif  z == 'cycle'   then drawDemo = {drawStatus, drawPins }
+  elseif  z == 'msg'     then drawDemo = {drawMsg}
+  elseif  z == 'pins'    then drawDemo = {drawPins}
+  elseif  z ==  'status' then drawDemo = {drawStatus}
+  else    drawDemo = {drawStatus} 
+  end
+
 end
 --drawDemo =  { drawStatus, drawPins, d_leg }
 
@@ -169,12 +176,8 @@ end
 function demoLoop()
   -- Start the draw loop with one of the demo functions
   local f = table.remove(drawDemo,1)  
-  if D.s_io then 
-     updateDisplay(drawPins)
-  else 
-    updateDisplay(f)
-  end
-    table.insert(drawDemo,f)
+  updateDisplay(f)
+  table.insert(drawDemo,f)
 end
 
 -- Initialise the display

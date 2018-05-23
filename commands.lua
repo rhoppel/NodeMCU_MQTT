@@ -5,6 +5,11 @@ function cmd_process(C)
 	if type(C.cmd) == 'string' then 
 		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins)
 		elseif C.cmd == "pwm" 		then pwm_updt(C.pin)
+		elseif C.cmd == "adc" 		then mqtt_pub_smsg(P_TOP.data,'adc',D.adc.read(0))
+		elseif C.cmd == "uart_write"  then uart.write(0,C.uart_write)
+		elseif C.cmd == "uart_on"     then uart.on()
+		elseif C.cmd == "uart_config" then uart_setup(C.uart_config)
+		elseif C.cmd == "heap" 		then mqtt_pub_smsg(P_TOP.data,'heap',D.heap)
 		elseif C.cmd == "pins" 		then mqtt_pub_smsg(P_TOP.data,'pins',PINS)
 		elseif C.cmd == "device" 	then mqtt_pub_smsg(P_TOP.data,'',{D.ID,D})
 		elseif C.cmd == "reset" 	then node.reset()
@@ -13,12 +18,13 @@ function cmd_process(C)
 		elseif C.cmd == "DEBUG" 	then D.dbg = not D.dbg
 		elseif C.cmd == "t_cal" 	then D.t_cal = C.t_cal 
 		elseif C.cmd == "name"		then D.name = C.name
-		elseif C.cmd == "msg"		then D.msg = C.msg; if C.msg == "" then D.msg = nil end; screens() 
+		elseif C.cmd == "msg"		then local x = C.msg 
+										if type(x) == 'table' or (type(x) == 'string' and string.len(x) >= 1 ) then D.msg = x; scrn_io('msg')
+										else D.msg = nil; scrn_io('status') 
+									end
+										
 		--[[
-		elseif C.cmd == "heap" then mqtt_pub_smsg(P_TOP.data,'heap',D.heap)
-		elseif C.cmd == "adc_get" then adc_get() 
-		elseif C.cmd == "uart_send" then pwm(C.pl)
-		elseif C.cmd == "uart_config" then pwm(C.pins)
+			
 		--]]
 		else
 		print(C.cmd, "command not found"); 
@@ -30,17 +36,18 @@ end
 -- commands
 
 -- alternate between the possible OLED screen modes 
-
-function  scrn_io() 
-	D.s_io = not D.s_io
-	if D.s_io then
-		tmr_rst('scrn', TMR.scrn.tio)
-	else 
-		tmr_rst('scrn')
+function  scrn_io(s) 
+	tmr_rst('scrn') 
+	local z = D.screen
+	if s == 'cycle' or s == 'pins' or s == 'status' or s == 'msg' then print(z); z = s
+	elseif z == 'cycle' then z = 'pins' ; tmr_rst('scrn', TMR.scrn.tio)
+	elseif z == 'pins' then z = 'status'
+	elseif D.msg and z == 'status' then z = 'msg'
+	else   z = 'cycle'
 	end
-	print("Display IO only:",D.s_io )
+	D.screen = z
+	screens() -- update screen displays
 end
-
 -- write pin data from a command to PINS Object
 function pins_write(X)
 	--print(dump(X))

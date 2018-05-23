@@ -1,9 +1,10 @@
-local fn,fp = "config", {"0.9b","4/8/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "config", {"0.9c","4/9/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
 CHIPS = {}
 CHIPS[1649453] = {"D1P",11}
 CHIPS[494215] = {"D1m",9,4}
+CHIPS[13695939] = {"D1m",9,4}
 CHIPS[3333] = {"TS",20}
 
 D = D or {
@@ -15,13 +16,13 @@ D = D or {
 ["tmpr"]  = 0,      -- last temperature sample
 ["heap_min"] = heap_min or 4000 ,-- minimum heapsize before processing MQTT packet to prevent overflow
 ["t_cal"] = t_cal or 0,
-["s_io"] = scrn_io or false,  -- video mode /  true means IO screen only
+["screen"] = screen or 'cycle',  -- video mode /  true means IO screen only
 ["mqtt"] = false,        -- state of the MQTT connection
 ["dbg"] = dbg or false,        -- is the DEBUG state active?
 ["msg"] = nil,   -- general place for a message to me sent from server 
 } 
 
-t_cal, name, scrn_io, heap_min = nil, nil, nil, nil
+t_cal, name, screen, heap_min, dbg = nil, nil, nil, nil, nil
 
 CHIPS = nil -- don't need this afterwards
 
@@ -38,10 +39,10 @@ TMR = TMR or {
 updt_t, updt_s, updt_r, updt_sio = nil, nil, nil, nil
 
 -- Configure GPIO PIN States
-local sdl = sdl or '1'       -- OLED
-local sda = sda or '2'       -- OLED 
-local sla = sla or 0x3c    -- OLED
-local ow_pin = ow_pin or '2'    -- temperature sensor
+sdl = sdl or '1'       -- OLED
+sda = sda or '2'       -- OLED 
+sla = sla or 0x3c    -- OLED
+ow_pin = ow_pin or '2'    -- temperature sensor
 
 --[[
 ESP8266 GPIO overview

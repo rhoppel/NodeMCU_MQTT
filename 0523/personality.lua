@@ -1,4 +1,4 @@
-local fn,fp = "personality", {"0.5","5/19/18","RLH"} ; fver[fn] = fp
+local fn,fp = "personality", {"0.5","4/1/18","RLH"} ; fver[fn] = fp
 print(string.format("Load: %s.lua  Ver:%s %s %s \n" ,fn, fp[1], fp[2], fp[3])) 
 AP={
 --SSID="HoppelLodge",
@@ -7,7 +7,7 @@ PASSWORD="ThisIsGREEN!"
 
 --PASSWORD="04386051"
 }
-WEB_CHECK="hoppellodge.com"
+WEB_CHECK="hoppellodge.remotewebaccess.com"
 Tpre = "/HL/"
 
 MQTT = {
@@ -16,7 +16,7 @@ MQTT = {
 --    NAME="HS2",
 --    IP="192.168.111.250",
 --    PORT=1883,
-    NAME="hoppellodge.com",
+    NAME="hoppellodge.remotewebaccess.com",
     IP="73.246.28.226",
     PORT=2812,
 }
