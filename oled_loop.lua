@@ -11,7 +11,7 @@
 -- Example:
 -- dofile("u8g_drawloop.lua")
 ------------------------------------------------------------------------------
-local fn,fp = "oled_loop", {"0.4","1/25/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "oled_loop", {"0.4a","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 ---[[ SYSTEM INITIALIZED in MAIN
@@ -61,7 +61,7 @@ end
 function d_fname(l)
   disp:drawFrame(0, l, 64, 15)
   disp:drawStr(5,l+3, D.name)
-  if dbg then disp:drawTriangle(58,l,63,l,63,l+5) end 
+  if D.dbg then disp:drawTriangle(58,l,63,l,63,l+5) end 
   if D.s_io then disp:drawTriangle(58,l+14,63,l+14,63,l+9) end
   if D.mqtt then disp:drawTriangle(6,l,0,l,0,l+5) end
 end
@@ -141,7 +141,28 @@ function drawPins()
   --disp:drawStr(30,40, "World")
 end
 
-drawDemo =  { drawStatus, drawPins }
+function drawMsg()
+  setLargeFont()
+  disp:drawLine(0, 11, 64, 11)
+  disp:drawLine(0, 00, 64, 00)
+  if type(D.msg) == 'string' then 
+    disp:drawStr(0,1,D.msg)
+  elseif type(D.msg) == 'table' then 
+    disp:drawLine(0, 11, 64, 11)
+    disp:drawLine(0, 00, 64, 00)
+    for k,v in pairs(D.msg) do
+      local x = 1  
+      i = tonumber(k) - 1
+      if i > 0 then x = 3 end  
+        if v then disp:drawStr(0, i * 9 + x,v) end
+    end
+  end 
+end
+
+function screens()
+  if D.msg then drawDemo =  { drawStatus, drawPins, drawMsg }
+  else drawDemo =  { drawStatus, drawPins } end
+end
 --drawDemo =  { drawStatus, drawPins, d_leg }
 
 
@@ -157,6 +178,7 @@ function demoLoop()
 end
 
 -- Initialise the display
+screens()
 init_display(sda, sdl, sla)
 init_display = nil
 

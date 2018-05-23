@@ -1,4 +1,4 @@
-if fver then local fn,fp = "mqtt_init", {"0.5","4/5/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
+if fver then local fn,fp = "mqtt_init", {"0.5a","4/6/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
 --local fn,fp = "mqtt_init", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
@@ -22,7 +22,7 @@ mq:on("message", function(client, topic, data)
   if data ~= nil and node.heap() >  D.heap_min
   then   
     local X = sjson.decode(data) 
-    if dbg then p_line(60,_,"TOPIC:"..topic); print("Payload:",data) end
+    if D.dbg then p_line(60,_,"TOPIC:"..topic); print("Payload:",data) end
     if topic ~= S_TOP.cmd then 
       print("Subscribe Only: no action")       
     else -- this is a command, process comands

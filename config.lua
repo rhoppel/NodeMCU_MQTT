@@ -1,4 +1,4 @@
-local fn,fp = "config", {"0.9a","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "config", {"0.9b","4/8/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
 CHIPS = {}
@@ -17,7 +17,8 @@ D = D or {
 ["t_cal"] = t_cal or 0,
 ["s_io"] = scrn_io or false,  -- video mode /  true means IO screen only
 ["mqtt"] = false,        -- state of the MQTT connection
-["dbg"] = dbg or false        -- is the DEBUG state active?
+["dbg"] = dbg or false,        -- is the DEBUG state active?
+["msg"] = nil,   -- general place for a message to me sent from server 
 } 
 
 t_cal, name, scrn_io, heap_min = nil, nil, nil, nil
@@ -126,7 +127,7 @@ end
 
 PINS = {}
 pins_init(PINS, PINS_CONFIG,D.pins)
---pin_init = nil 
+pins_init = nil 
 PINS_CONFIG = nil
 
 --if D.pina > 0  then print("> GPIO Pins Initialized") else print("!!! GPIO Pins NOT Initialized")end

@@ -24,15 +24,15 @@ MQTT = {
 name = " Thing 2"  -- friendly name for device
 -- OVERRIDE VALUES in main
 dbg = false -- debug mode, show status on std output
-local heap_min = 3000 -- minimum heapsize before processing MQTT packet to prevent overflow
-local heap_load = 6510 -- delay loading module if heap is < this value
-local scrn_io = false   -- screen mode/ show io pins only
-local t_cal = -5  -- calibration
-local updt_t = 30101  -- over-ride temperature update time
-local updt_s = nil or 5012   -- over-ride screen update time
-local updt_sio = 710 or 333   -- over-ride IO screen update time
-local updt_r = 212    -- over-ride read_gpio update time
-local ow_pin = 2      -- temperature probe pin
+heap_min = 3000 -- minimum heapsize before processing MQTT packet to prevent overflow
+heap_load = 6510 -- delay loading module if heap is < this value
+scrn_io = false   -- screen mode/ show io pins only
+t_cal = -4  -- calibration
+updt_t = 30101  -- over-ride temperature update time
+updt_s = nil or 5012   -- over-ride screen update time
+updt_sio = 710 or 333   -- over-ride IO screen update time
+updt_r = 212    -- over-ride read_gpio update time
+ow_pin = 2      -- temperature probe pin
 
 
 ---[[

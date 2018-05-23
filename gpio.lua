@@ -1,4 +1,4 @@
- local fn,fp = "gpio", {"0.6a","2/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+ local fn,fp = "gpio", {"0.6b","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
  
 local updt_r = updt_r or 230  -- gpio update
@@ -48,7 +48,7 @@ function pins_rw()
 		end
 	end
 	if r_chng then 
-		if dbg then p_line(_,_,"INPUTs have changed") end
+		if D.dbg then p_line(_,_,"INPUTs have changed") end
 		--if D.mqtt ~= 'userdata' then print("INPUT changed but MQ not defined yet") end
 		--if D.mqtt then mq:publish(P_TOP.data, sjson.encode({["data"] = 'ipins', ["ipins"] = pins_msg(PINS)}),0,0) end
 		if D.mqtt then mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
@@ -63,9 +63,13 @@ end
 ---[[
  function pwm_updt(i)
 	local T = PINS
-	if T[i].pwm == nil then return end
-	pwm.setup(i,T[i].freq,T[i].duty)
-	if T[i].pwm then pwm.start(i) end
+	if T[i].pwm then 
+		pwm.setup(i,T[i].freq,T[i].duty)
+		pwm.start(i) 
+	elseif not T[i].pwm then 
+		pwm.stop(i)
+		pwm.close(i)
+	end
  end
  --]]
 
