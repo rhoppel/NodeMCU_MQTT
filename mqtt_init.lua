@@ -1,9 +1,9 @@
-if fver then local fn,fp = "mqtt_init", {"0.5a","4/6/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
+if fver then local fn,fp = "mqtt_init", {"0.5b","5/25/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
 --local fn,fp = "mqtt_init", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 -- init mqtt client without logins, keepalive timer 120s
-mq = mqtt.Client(MQTT.ID, 120)
+mq = mqtt.Client(D.id, 120)
 
 -- init mqtt client with logins, keepalive timer 120sec
 --m = mqtt.Client("clientid", 120, "user", "password")

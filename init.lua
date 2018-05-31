@@ -1,6 +1,6 @@
 print("Initial heap:", node.heap())
 fver = {} ; OS = false ; print("init.lua:(heap)",node.heap()) -- hardware init.lua means NO OS
-local fn,fp = "init", {"0.4a","1/6/18","RLH"} ; fver[fn] = fp
+local fn,fp = "init", {"0.4b","5/23/18","RLH"} ; fver[fn] = fp
 print(string.format("Load: %s.lua  Ver:%s %s %s \n" ,fn, fp[1], fp[2], fp[3]))
 
 -- load credentials, 'SSID' and 'PASSWORD' declared and initialize in there
@@ -49,7 +49,7 @@ wifi_dscnct_event = function(T)
     return 
   end
   --tries: how many times the station will attempt to connect to the AP. Should consider AP reboot duration.
-  localtries = 75
+  local total_tries = 75
   print("\nWiFi connection to AP("..T.SSID..") has failed!")
 
   --There are many possible disconnect reasons, the following iterates through 
@@ -66,7 +66,7 @@ wifi_dscnct_event = function(T)
   else
     dscnct_ct = dscnct_ct + 1 
   end
-  if dscnct_ct <tries then 
+  if dscnct_ct < total_tries then 
     print("Retrying connection...(attempt "..(dscnct_ct+1).." of "..total_tries..")")
   else
     wifi.sta.disconnect()

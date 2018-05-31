@@ -1,4 +1,4 @@
- local fn,fp = "gpio", {"0.6b","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+ local fn,fp = "gpio", {"0.6d","5/25/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
  
 local updt_r = updt_r or 230  -- gpio update
@@ -52,13 +52,16 @@ function pins_rw()
 		--if D.mqtt ~= 'userdata' then print("INPUT changed but MQ not defined yet") end
 		--if D.mqtt then mq:publish(P_TOP.data, sjson.encode({["data"] = 'ipins', ["ipins"] = pins_msg(PINS)}),0,0) end
 		if D.mqtt then mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
-		else print("ERROR: MQTT not connected")
+		else print("ERROR[pins_rw]: MQTT not connected")
 		end
 	end
     return r_chng
 end 
 
- function pwm_updt(i)
+ function pwm_updt(k)
+	-- could add data validation
+	local i = tonumber(k)
+	if i < 0 or i > D.pins - 1 then return end
 	local T = PINS
 	if T[i].pwm then 
 		pwm.setup(i,T[i].freq,T[i].duty)

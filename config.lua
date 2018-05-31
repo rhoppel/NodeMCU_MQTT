@@ -1,18 +1,20 @@
 local fn,fp = "config", {"0.9c","4/9/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
-CHIPS = {}
-CHIPS[1649453] = {"D1P",11}
-CHIPS[494215] = {"D1m",9,4}
-CHIPS[13695939] = {"D1m",9,4}
-CHIPS[3333] = {"TS",20}
+NODEMCU = {}
+NODEMCU[1] = {"D1P",11,4}
+NODEMCU[2] = {"D1",9,4}
+NODEMCU[3] = {"D1m",9,4}
+NODEMCU[4] = {"TS",20,4}
 
-D = D or {
+local m = 3
+
+D =  {
 ["name"] = name or "?",
-["type"] = CHIPS[node.chipid()][1] or NM,
-["pins"] = CHIPS[node.chipid()][2], --
-["LED"] = CHIPS[node.chipid()][3],  -- pin that controls LED
-["ID"] = CHIPS[node.chipid()][1] .."_".. string.sub(string.gsub(wifi.sta.getmac(), ":", ""),7,12),
+["type"] = NODEMCU[m][1] or NM,
+["pins"] = NODEMCU[m][2], --
+["LED"] = NODEMCU[m][3],  -- pin that controls LED
+["ID"] = NODEMCU[m][1] .."_".. string.sub(string.gsub(wifi.sta.getmac(), ":", ""),7,12),
 ["tmpr"]  = 0,      -- last temperature sample
 ["heap_min"] = heap_min or 4000 ,-- minimum heapsize before processing MQTT packet to prevent overflow
 ["t_cal"] = t_cal or 0,
@@ -24,7 +26,7 @@ D = D or {
 
 t_cal, name, screen, heap_min, dbg = nil, nil, nil, nil, nil
 
-CHIPS = nil -- don't need this afterwards
+NODEMCU = nil -- don't need this afterwards
 
 -- set system variables/registers / these may be set in cred.lua
 -- timers
@@ -131,7 +133,7 @@ pins_init(PINS, PINS_CONFIG,D.pins)
 pins_init = nil 
 PINS_CONFIG = nil
 
---if D.pina > 0  then print("> GPIO Pins Initialized") else print("!!! GPIO Pins NOT Initialized")end
+--if D.pins > 0  then print("> GPIO Pins Initialized") else print("!!! GPIO Pins NOT Initialized")end
 
 -- MQTT Topics
 Tpre = Tpre or 'MyTopic'
@@ -148,4 +150,5 @@ P_TOP = P_TOP or  {
 --    status =    "/HL/status",
 }
 
+--if file.exists("read_json.lua") then dofile("read_json.lua") end
 

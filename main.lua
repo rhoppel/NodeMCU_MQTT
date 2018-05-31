@@ -1,5 +1,5 @@
 --if OS == nil then OS, fver, OSDIR = true, {}, "Z:\\Lua\\MQTT_HL\\" ; print("running on OS") end  -- initialize fver if running on OS
-local fn,fp = "main", {"0.4","1/21/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "main", {"0.4a","5/24/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 -- install helper_io 
     -- for OS testing
 function p_local_fver(fn,fp)  -- prints filename and version to output
@@ -43,10 +43,10 @@ then -- load these modules if testing on OS
 --    "personality",
     "config",
     "helper",
-    "mqtt_init",
     "gpio",
     "commands",
     "read_temp",
+    "mqtt_init",
 --    "oled_loop"
     --"mqtt_json_test"
     }
