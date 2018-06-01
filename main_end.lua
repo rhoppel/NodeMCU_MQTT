@@ -1,4 +1,4 @@
-p_line(_,'*','The following executes at the of the main.lua')
+p_line(_,'','The following executes at the end of the main.lua')
 
 if p_fver then  p_fver() ; p_line() end
 
@@ -28,5 +28,6 @@ tmr.alarm(TMR.dly.n, 1500, tmr.ALARM_SINGLE, function()
 
 		end)
 	end)
+tmr.unregister(TMR.dly.n)
 
 
