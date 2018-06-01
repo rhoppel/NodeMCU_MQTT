@@ -1,13 +1,13 @@
- local fn,fp = "gpio", {"0.6d","5/25/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+ local fn,fp = "gpio", {"0.7","5/31/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
  
 local updt_r = updt_r or 230  -- gpio update
 local tmr_r = tmr_r or '5'    -- read gpio tim
 local PINS = PINS or {}
 
-
  -- hardware functions
 function pins_mode(T)
+	local i
 	for i = 0, D.pins - 1 do
 		if T[i].m
 		then
@@ -34,6 +34,7 @@ pins_mode = nil -- remove after using
 function pins_rw()
 	local T = PINS
 	local r_chng = false
+	local i
 	for i = 0,D.pins - 1 do
 		local m = T[i].m
 		if m then

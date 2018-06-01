@@ -3,7 +3,7 @@ if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 function cmd_process(C)
 	if type(C.cmd) == 'string' then 
-		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins)
+		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins);pins_mode(PINS)
 		elseif C.cmd == "pwm"	then pwm_updt(C.pin)
 		elseif C.cmd == "adc"	then  D.adc = adc.read(0); mqtt_pub_smsg(P_TOP.data,'adc',D.adc)
 		elseif C.cmd == "uart_write" then uart.write(0,C.uart_write)
@@ -112,7 +112,7 @@ end
 
 function pins_config(T,U)  -- PIN CONSTRUCTOR
 	for k,v in pairs(U) do
-		i = tonumber(k)
+		local i = tonumber(k)
 		if T[i].m ~= nil or (U[k] and U[k].m ~= nil)              -- only process additional info if mode is specified
 		then 
 			--T[i] = {}			-- clear previous pin state
@@ -139,7 +139,7 @@ function pins_config(T,U)  -- PIN CONSTRUCTOR
 end  
 --  publish (MQTT) a simple JSON encoded message
 function mqtt_pub_smsg(topic,key,value,noEnc)
-	nE = noEnc or nil -- flag to prevent JSON encodeingof payload
+	local nE = noEnc or nil -- flag to prevent JSON encodeingof payload
 	if type(key)  == 'string' 	
 	then 
 		local x = {};

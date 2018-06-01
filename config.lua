@@ -1,6 +1,9 @@
 local fn,fp = "config", {"0.9c","4/9/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
+local fn = "read_json.lua"
+if file.exists(fn) then dofile(fn) end
+
 NODEMCU = {}
 NODEMCU[1] = {"D1P",11,4}
 NODEMCU[2] = {"D1",9,4}
@@ -23,22 +26,21 @@ D =  {
 ["dbg"] = dbg or false,        -- is the DEBUG state active?
 ["msg"] = nil,   -- general place for a message to me sent from server 
 } 
-
 t_cal, name, screen, heap_min, dbg = nil, nil, nil, nil, nil
-
-NODEMCU = nil -- don't need this afterwards
+NODEMCU = nil -- don't need this afterward
+oo(D,"D.json")
 
 -- set system variables/registers / these may be set in cred.lua
 -- timers
-TMR = TMR or {
+TMR = {
 ["tmpr"] = {["n"] = 3, ["t"] = updt_t or 10101, ["f"] = nil}, -- n(number), t(timer interval), f(function)
 ["scrn"] = {["n"] = 4, ["t"] = updt_s or 5012,  ["tio"] = updt_sio or 333, ["f"] = nil},
 ["rp"] = {["n"] = 5, ["t"] = updt_r or 212, ["f"] = nil},
 ["dly"] = {["n"] = 6, ["t"] = nil},
 ["heap"] = {["n"] = 0, ["t"] = nil},
 }
-
 updt_t, updt_s, updt_r, updt_sio = nil, nil, nil, nil
+oo(TMR,"TMR.json",true)
 
 -- Configure GPIO PIN States
 sdl = sdl or '1'       -- OLED
@@ -130,6 +132,7 @@ end
 
 PINS = {}
 pins_init(PINS, PINS_CONFIG,D.pins)
+oo(PINS,"PINS.json",true)
 pins_init = nil 
 PINS_CONFIG = nil
 
@@ -150,5 +153,5 @@ P_TOP = P_TOP or  {
 --    status =    "/HL/status",
 }
 
---if file.exists("read_json.lua") then dofile("read_json.lua") end
+oo = nil  
 

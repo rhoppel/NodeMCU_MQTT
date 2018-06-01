@@ -1,4 +1,4 @@
-local fn,fp = "helper", {"0.5b","5/29/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "helper", {"0.5a","1/21/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 p_local_fver(fn,fp)
 
 -- make id a concatenation of devide and last 6 digits of MAC address

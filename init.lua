@@ -4,7 +4,20 @@ local fn,fp = "init", {"0.4b","5/23/18","RLH"} ; fver[fn] = fp
 print(string.format("Load: %s.lua  Ver:%s %s %s \n" ,fn, fp[1], fp[2], fp[3]))
 
 -- load credentials, 'SSID' and 'PASSWORD' declared and initialize in there
-dofile("personality.lua")
+if file.exists("personality.lua") then dofile("personality.lua") end
+-- strings
+--[[
+nh = node.heap
+m = "main"
+
+p = print
+d = dofile
+fe = file.exists
+sS = "Success!"
+-- s used in OLED.lua
+sR = "Running"
+sE = "ERROR"
+--]]
 
 function startup()
     if file.open("init.lua") == nil then
@@ -12,8 +25,7 @@ function startup()
     else
         print("Running")
         file.close("init.lua")
-        if file.exists("test.lua") then dofile("test.lua")
-        elseif file.exists("main.lc") then print"Loading: main.lc" dofile("main.lc")
+        if file.exists("main.lc") then print"Loading: main.lc" dofile("main.lc")
         elseif file.exists("main.lua") then dofile("main.lua") 
         end
     end

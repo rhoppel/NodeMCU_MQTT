@@ -67,7 +67,7 @@ mq:connect(MQTT.IP, MQTT.PORT, 0, function(client)
     client:publish(topic, msg, 0, 0, function(client) print("MQTT Publish:","\t\tdata received"); D.mqtt = true end)   -- Turn om MQR to enable further MQTT 
  end
 end,
-function(client, reason)  print("failed reason: " .. reason) end
+function(client, reason)  print("MQTT failed reason: " .. reason) end
 )
 
 mq:close();
