@@ -7,7 +7,8 @@ p_local_fver(fn,fp)
 function id() return make_id() end
 
 function p_line(b,c,x)  -- prints a line to the output
-    b = b or 60         -- number of chars to print
+	local b, c, x, i
+	b = b or 60         -- number of chars to print
     c = c or "-"        -- char to print
     x = x or ""         -- label at beginning of line
     for i = 1, b - #x do

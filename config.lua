@@ -1,4 +1,5 @@
-local fn,fp = "config", {"0.9c","4/9/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "config", {"0.9d","6/3/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+if p_local_fver == nil then dofile("p_local_fver.lua") end
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
 local fn = "read_json.lua"
@@ -113,6 +114,7 @@ PINS_CONFIG = PINS_CONFIG or {
 --]]
 --INPUT, OUTPUT, INT, OPENDRAIN, LOW, HIGH, PULLUP = 0, 1, 2, 3, 0, 1, 1
 function pins_init(T,U,npins)  -- PIN CONSTRUCTOR
+        local i
         for i = 0, npins -1  do  
                 T[i] = T[i] or {}  -- a pin with only an empty set means that pin is not available for processing
 		if U[i] and  U[i].m              -- only process additional info if mode is specified
@@ -153,5 +155,6 @@ P_TOP = P_TOP or  {
 --    status =    "/HL/status",
 }
 
+oo(MQTT,"MQTT.json")
 oo = nil  
 

@@ -1,41 +1,57 @@
- local fn,fp = "gpio", {"0.7","5/31/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
-if p_local_fver ~= nil then p_local_fver(fn,fp) end
+ local fn,fp = "gpio", {"0.8","6/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+if p_local_fver == nil then dofile("p_local_fver.lua") end
+ if p_local_fver ~= nil then p_local_fver(fn,fp) end
  
-local updt_r = updt_r or 230  -- gpio update
-local tmr_r = tmr_r or '5'    -- read gpio tim
-local PINS = PINS or {}
-
  -- hardware functions
-function pins_mode(T)
-	local i
-	for i = 0, D.pins - 1 do
-		if T[i].m
-		then
---		print("Mode", i,T[i].m)
-			if T[i].pu then
---				print(i, 'gpio.'.. T[i].m, gpio.PULLUP)
-				gpio.mode(i, T[i].m, gpio.PULLUP )
-			else
---				print(i, 'gpio.'.. T[i--].m)
-				gpio.mode(i, T[i].m)
+
+ --configure  gpio pin for pwm
+ function pwmG(T,p,s) -- pin, start(T/F) optional
+	-- could add data validation
+	local i = tonumber(p)
+
+	if i < 1 or i > D.pins - 1 then return end
+	  if T[i].pwm then 
+		print("pwmG: ",i, "start: ",s )
+		if s == nil  then 
+--			local f = T[i].freq or 500--
+--			local d = T[i].duty or 512
+--			pwm.setup(i,f,d) 
+			print("pwmG[setup]: ",i,"pwm: ",T[i].pwm, "freq: ",T[i].freq,"duty: ",T[i].duty )
+			pwm.setup(i,T[i].freq or 500,T[i].duty or 512) 
+		elseif s == true then pwm.start(i)
+		elseif s == false then pwm.stop(i)
+		else 
+			print("pwmG: ","ERROR" )
+		end
+	else pwm.close(i)
+	end
+
+end
+
+ function pins_mode(T)
+	local i 
+	for i = 0 ,D.pins -1  do
+		if T[i].m then
+			--print("pins_mode: ",i, "mode: ",T[i].m)
+			if T[i].pu then	gpio.mode(i, T[i].m, gpio.PULLUP )
+			else gpio.mode(i, T[i].m)
 			end
 		end
-		if T[i].pwm ~= nil then
-			pwm.setup(i,T[i].freq,T[i].duty)
-			-- if T[i].pwm then pwm.start(i) end
-		end 
+		pwmG(T,i,nil)
 	end
+
 end
 
 pins_mode(PINS)
-pins_mode = nil -- remove after using
+--pins_mode = nil -- remove after using
 
----[[
 function pins_rw()
 	local T = PINS
 	local r_chng = false
 	local i
+
 	for i = 0,D.pins - 1 do
+		--print("pins_rw: ",i, type(i))
 		local m = T[i].m
 		if m then
 			if  m == gpio.INPUT or m == gpio.INT then
@@ -59,20 +75,5 @@ function pins_rw()
     return r_chng
 end 
 
- function pwm_updt(k)
-	-- could add data validation
-	local i = tonumber(k)
-	if i < 0 or i > D.pins - 1 then return end
-	local T = PINS
-	if T[i].pwm then 
-		pwm.setup(i,T[i].freq,T[i].duty)
-		pwm.start(i) 
-	elseif not T[i].pwm then 
-		pwm.stop(i)
-		pwm.close(i)
-	end
- end
- --]]
-
 TMR.rp.f = pins_rw
---tmr_rst('rp')
+tmr_rst('rp')

@@ -1,10 +1,10 @@
-local fn,fp = "commands", {"0.7h","5/31/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "commands", {"0.8","6/3/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 function cmd_process(C)
 	if type(C.cmd) == 'string' then 
 		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins);pins_mode(PINS)
-		elseif C.cmd == "pwm"	then pwm_updt(C.pin)
+		elseif C.cmd == "pwm"	then pwmG(PINS,C.pin,C.start)
 		elseif C.cmd == "adc"	then  D.adc = adc.read(0); mqtt_pub_smsg(P_TOP.data,'adc',D.adc)
 		elseif C.cmd == "uart_write" then uart.write(0,C.uart_write)
 		elseif C.cmd == "uart_on"	then uart.on()
@@ -126,9 +126,9 @@ function pins_config(T,U)  -- PIN CONSTRUCTOR
 				if U[k].t ~= nil then T[i].t = U[k].t end	-- t (trigger type) {"up", "down", "both", "low", "high"}
 			else 
 				if U[k].w    ~= nil then T[i].w    = U[k].w end	-- w (write) {"LOW","HIGH"} 
-				if U[k].pwm  ~= nil then T[i].pwm  = U[k].pwm end -- pwm modulation on/off
 				if U[k].freq ~= nil then T[i].freq = U[k].freq end -- pwm frequency (0 - 1000 Hz)
 				if U[k].duty ~= nil then T[i].duty = U[k].duty end -- duty cycle (0-1024)
+				if U[k].pwm  ~= nil then T[i].pwm  = U[k].pwm ; pwmG(PINS,i,nil) end -- pwm modulation on/off
 				--if T[i].pwm ~= nil then pwm_updt(k) end
 			end
 		else
@@ -138,21 +138,21 @@ function pins_config(T,U)  -- PIN CONSTRUCTOR
 
 end  
 --  publish (MQTT) a simple JSON encoded message
-function mqtt_pub_smsg(topic,key,value,noEnc)
-	local nE = noEnc or nil -- flag to prevent JSON encodeingof payload
+function mqtt_pub_smsg(topic,key,value,enc)
+	local enc =  enc or true  -- flag to prevent JSON encodeingof payload
 	if type(key)  == 'string' 	
 	then 
 		local x = {};
 		x[key] = value 
 		if key == '' then x = value end
-		local json
-		if nE then json = x
-		else json = sjson.encode(x)
+		local pl 
+		if enc  then pl = sjson.encode(x)
+		else pl = x
 		end
 		local t = topic..key
 		--local json = '{"'.. key .. ':",' .. value ..'}'
-		if D.dbg then p_line(60,_,"MQTT Publish: "..t); print(json) end
-		mq:publish(t,json,0,0,function(client) if D.dbg then print("MQTT Publish:","\t\tdata received") end end)
+		if D.dbg then p_line(60,_,"MQTT Publish: "..t); print(pl) end
+		mq:publish(t,pl,0,0,function(client) if D.dbg then print("MQTT Publish:","\t\tdata received") end end)
 	else print("Error C.cmd is not a string")
 	end
 end  

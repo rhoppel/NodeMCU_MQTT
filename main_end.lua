@@ -5,6 +5,7 @@ if p_fver then  p_fver() ; p_line() end
 --if p_status then p_line(_,_,'status'); p_status() end
 if init_clean then init_clean() ; p_line(_,_,"init_clean()") end
 
+
 tmr.alarm(TMR.dly.n, 1500, tmr.ALARM_SINGLE, function() 
 	init_clean2() 
 	p_line(_,_,"Clean complete, start timers")
@@ -19,15 +20,16 @@ tmr.alarm(TMR.dly.n, 1500, tmr.ALARM_SINGLE, function()
 			tmr_rst('rp')
 			tmr_rst('tmpr')
 			tmr_rst('scrn')
-			pins_rw(true)
+            p_line(_,_,"get input pin status")
+			pins_rw(PINS)
+            p_line(_,_,"Publish Node Input Info")
 			mqtt_pub_smsg(P_TOP.data,'pins',PINS)
+            p_line(_,_,"Publish Heap Info")
 			mqtt_pub_smsg(P_TOP.data,'heap',node.heap())
+            p_line(_,_,"Publish Node Input Info")
             mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
-			TMR.heap.t, TMR.heap.f = 60000, node.heap
-			tmr_rst('heap')
-
+            p_line(_,_,"Set Heap report timer")
+--			TMR.heap.t, TMR.heap.f = 60000, node.heap
+--			tmr_rst('heap')
 		end)
 	end)
-tmr.unregister(TMR.dly.n)
-
-

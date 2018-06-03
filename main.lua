@@ -9,6 +9,7 @@ p_local_fver(fn,fp)
 
 
 function p_line(b,c,x)  -- prints a line to the output
+    local i
     b = b or 60         -- number of chars to print
     c = c or "-"        -- char to print
     x = x or ""         -- label at beginning of line
@@ -65,6 +66,8 @@ for i = 1, #modules do
             print("heap size too small...cleaning:",node.heap())
         end
         dofile(fname) 
+        collectgarbage('collect')
+        collectgarbage('collect')
         print(string.format("* Completed %-25s heapsize=%d",fname,node.heap()))
     else
         print(fname .. " does not exist")
@@ -78,6 +81,8 @@ modules = nil
 sdl, sda, ow_pin = nil, nil, nil
 WEB_CHECK = nil
 heap_load = nil
+collectgarbage('collect')        
+collectgarbage('collect')
 
 --tupdt, supdt = nil, nil 
 p_line(_,_,'Device Info')
@@ -85,5 +90,8 @@ p_dinfo()
 p_line(_,_,'PINS configuration')
 p_pins(PINS,'PINS')
 p_line()
+
+collectgarbage('collect')        
+collectgarbage('collect')
 
  if  file.exists("main_end.lua") then dofile("main_end.lua") end
