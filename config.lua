@@ -19,7 +19,7 @@ D =  {
 ["pins"] = NODEMCU[m][2], --
 ["LED"] = NODEMCU[m][3],  -- pin that controls LED
 ["ID"] = NODEMCU[m][1] .."_".. string.sub(string.gsub(wifi.sta.getmac(), ":", ""),7,12),
-["tmpr"]  = 0,      -- last temperature sample
+["t"]  = 0,      -- last temperature sample
 ["heap_min"] = heap_min or 4000 ,-- minimum heapsize before processing MQTT packet to prevent overflow
 ["t_cal"] = t_cal or 0,
 ["screen"] = screen or 'cycle',  -- video mode /  true means IO screen only
@@ -34,7 +34,7 @@ oo(D,"D.json")
 -- set system variables/registers / these may be set in cred.lua
 -- timers
 TMR = {
-["tmpr"] = {["n"] = 3, ["t"] = updt_t or 10101, ["f"] = nil}, -- n(number), t(timer interval), f(function)
+["t"] = {["n"] = 3, ["t"] = updt_t or 10101, ["f"] = nil}, -- n(number), t(timer interval), f(function)
 ["scrn"] = {["n"] = 4, ["t"] = updt_s or 5012,  ["tio"] = updt_sio or 333, ["f"] = nil},
 ["rp"] = {["n"] = 5, ["t"] = updt_r or 212, ["f"] = nil},
 ["dly"] = {["n"] = 6, ["t"] = nil},

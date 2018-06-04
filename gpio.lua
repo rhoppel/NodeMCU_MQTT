@@ -8,7 +8,7 @@ if p_local_fver == nil then dofile("p_local_fver.lua") end
  function pwmG(T,p,s) -- pin, start(T/F) optional
 	-- could add data validation
 	local i = tonumber(p)
-
+	
 	if i < 1 or i > D.pins - 1 then return end
 	  if T[i].pwm then 
 		print("pwmG: ",i, "start: ",s )

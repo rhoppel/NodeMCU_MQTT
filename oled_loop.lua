@@ -11,7 +11,7 @@
 -- Example:
 -- dofile("u8g_drawloop.lua")
 ------------------------------------------------------------------------------
-local fn,fp = "oled_loop", {"0.4a","4/6/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "oled_loop", {"0.4b","5/31/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 ---[[ SYSTEM INITIALIZED in MAIN
@@ -25,10 +25,11 @@ local disp
 local font
 
 s = ""
+local i 
 for i = 0,D.pins - 1 do
-local x = i
-if i > 9 then x = i -10 end
-s = s .. tostring(x)
+  local x = i
+  if i > 9 then x = i -10 end
+  s = s .. tostring(x)
 end
 
 function init_display(sda, sdl, sla)
@@ -82,6 +83,7 @@ function d_ip(y)
 end
 
 function d_pins(y)
+  local i
   for i = 0,D.pins - 1 do 
    if PINS[i].m then --exit if mode is not defined
     local x = i*6
@@ -125,7 +127,7 @@ function drawStatus()
   d_fname(0)
   d_id(13)
   d_ip(29)
-  disp:drawStr(0,40,D.tmpr)
+  disp:drawStr(0,40,D.t)
   disp:drawLine(13, 39, 13, 50)
   --disp:drawFrame(12, 40, 0, 10)
   if D.mqtt then disp:drawStr(16,40,"MQTT") end
@@ -145,12 +147,12 @@ function drawMsg()
   setLargeFont()
   disp:drawLine(0, 11, 64, 11)
   disp:drawLine(0, 00, 64, 00)
-  if type(D.msg) == 'string' then 
-    disp:drawStr(0,1,D.msg)
-  elseif type(D.msg) == 'table' then 
+  if type(M) == 'string' then 
+    disp:drawStr(0,1,M)
+  elseif type(M) == 'table' then 
     disp:drawLine(0, 11, 64, 11)
     disp:drawLine(0, 00, 64, 00)
-    for k,v in pairs(D.msg) do
+    for k,v in pairs(M) do
       local x = 1  
       i = tonumber(k) - 1
       if i > 0 then x = 3 end  
@@ -161,7 +163,7 @@ end
 
 function screens()
   local z = D.screen
-  if      z == 'cycle' and D.msg then drawDemo =  {drawStatus, drawPins, drawMsg }
+  if      z == 'cycle' and M then drawDemo =  {drawStatus, drawPins, drawMsg }
   elseif  z == 'cycle'   then drawDemo = {drawStatus, drawPins }
   elseif  z == 'msg'     then drawDemo = {drawMsg}
   elseif  z == 'pins'    then drawDemo = {drawPins}

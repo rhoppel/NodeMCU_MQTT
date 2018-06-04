@@ -12,7 +12,7 @@ function cmd_process(C)
 		elseif C.cmd == "heap"	then mqtt_pub_smsg(P_TOP.data,'heap',D.heap)
 		elseif C.cmd == "pins"	then mqtt_pub_smsg(P_TOP.data,'pins',PINS)
 		elseif C.cmd == "device"	then mqtt_pub_smsg(P_TOP.data,'',{D.ID,D})
-		elseif C.cmd == "reset"	then node.reset()
+		elseif C.cmd == "reset"	then node.restart()
 		elseif C.cmd == "pins_write" then pins_write(C.pins)
 		elseif C.cmd == "scrn_io"	then scrn_io()
 		elseif C.cmd == "DEBUG"	then D.dbg = not D.dbg
@@ -20,8 +20,12 @@ function cmd_process(C)
 		elseif C.cmd == "name"	then D.name = C.name
 		elseif C.cmd == "fileOp" then fileOp(C.file)
 		elseif C.cmd == "msg" then local x = C.msg 
-			if type(x) == 'table' or (type(x) == 'string' and string.len(x) >= 1 ) then D.msg = x; scrn_io('msg')
-			else D.msg = nil; scrn_io('status') 
+			if type(x) == 'table' or (type(x) == 'string' and string.len(x) >= 1 ) then 
+				M = x; scrn_io('msg')
+				local M = {} ; M.op = "w"; M.p = sjson.encode(x); M.f = "M.json" 
+				--print(sjson.encode(M))
+				fileOp(M)
+			else M= nil; scrn_io('status') 
 			end
 		else
 		print(C.cmd, "command not found"); 
@@ -43,6 +47,7 @@ function fileOp(U)
 		elseif O == "TMR" then T = TMR
 		elseif O == "D" then T = D
 		elseif O == "AP" then T = AP
+		elseif O == "M" then T = M
 		end
 	end
 
@@ -90,7 +95,7 @@ function  scrn_io(s)
 	if s == 'cycle' or s == 'pins' or s == 'status' or s == 'msg' then print(z); z = s
 	elseif z == 'cycle' then z = 'pins' ; tmr_rst('scrn', TMR.scrn.tio)
 	elseif z == 'pins' then z = 'status'
-	elseif D.msg and z == 'status' then z = 'msg'
+	elseif M and z == 'status' then z = 'msg'
 	else   z = 'cycle'
 	end
 	D.screen = z

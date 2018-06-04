@@ -1,4 +1,4 @@
-if fver then local fn,fp = "mqtt_init", {"0.5b","5/25/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
+if fver then local fn,fp = "mqtt_init", {"0.6","6/3/18","RLH"} ;fver[fn] = fp ; p_local_fver(fn,fp) end
 --local fn,fp = "mqtt_init", {"0.1","1/1/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 --if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
@@ -32,7 +32,7 @@ mq:on("message", function(client, topic, data)
         --print(dump(pl,""))
         cmd_process(pl)
       else 
-        print("JSON ERROR:",pl)
+        print("JSON  :",pl)
       end
     end
   end
@@ -67,7 +67,7 @@ mq:connect(MQTT.IP, MQTT.PORT, 0, function(client)
     client:publish(topic, msg, 0, 0, function(client) print("MQTT Publish:","\t\tdata received"); D.mqtt = true end)   -- Turn om MQR to enable further MQTT 
  end
 end,
-function(client, reason)  print("MQTT failed reason: " .. reason) end
+function(client, reason)  print("failed reason: " .. reason);node.restart() end
 )
 
 mq:close();
