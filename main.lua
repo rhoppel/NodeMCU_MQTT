@@ -113,11 +113,11 @@ tmr.alarm(TMR.dly.n, 2000, tmr.ALARM_SINGLE, function()
             TMR.heap.t, TMR.heap.f = 60000, node.heap
             tmr_rst('heap')
 
-            --dofile('O_updt.lua')
+			--dofile('O_updt.lua')
+			p_line(_,_,'PINS config from JSON')
             dofile('read_json.lc')
             local X = oo('PINS.json')
             if X then 
-				p_line(_,_,'PINS config from JSON')
                 pins_config(PINS,X)
                 pins_config = nil
                 X = nil

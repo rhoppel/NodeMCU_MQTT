@@ -105,8 +105,8 @@ end
 
 function p_pins(T,xname)
     for i = 0,D.pins-1 do
-    print(string.format("%s[%s] \t= mode: %s\twrite: %s\tread: %s pu:%s", 
-    xname or "PINS", i, T[i].m or "", T[i].w or "", T[i].r or "", tostring(T[i].pu) or ""))
+        print(string.format("%s[%s] \t= mode: %s\twrite: %s\tread: %s pu:%s name:%s" , 
+        xname or "PINS", i, T[i].m or "", T[i].w or "", T[i].r or "", tostring(T[i].pu) or "",T[i].n or ""))
         if T[i].pwm ~= nil then 
          print(string.format("\t\tpwm: true\tpwm-freq: %s\tpwm-duty: %s", 
          T[i].freq or "", T[i].duty or ""))

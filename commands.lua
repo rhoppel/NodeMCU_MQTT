@@ -25,7 +25,9 @@ function cmd_process(C)
 				M = x; scrn_io('msg')
 				local M = {} ; M.op = "w"; M.p = sjson.encode(x); M.f = "M.json" 
 				--print(sjson.encode(M))
+				dofile("fileOp.lc")
 				fileOp(M)
+				fileOp = nil
 			else M= nil; scrn_io('status') 
 			end
 		else
