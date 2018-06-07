@@ -62,12 +62,14 @@ function fileOp(U)
 			file.open(f,o);
 			if o == 'w' then 
 				if not p and T then p = sjson.encode(T) end
+				print("fileOp:", "p:",p)
 				file.write(p)
 				pl = s
 			end
 			if o == 'r' or o == 'c' then 
 				if file.exists(f) then 
 					pl = file.read()
+                    print(pl)
 					if o == "c" then 
 						file.close()
 						file.open(U.f2,"w")

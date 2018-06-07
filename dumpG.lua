@@ -19,3 +19,4 @@ function dump(t,i)
 end
 
 dump(_G,"")
+dump = nil

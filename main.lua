@@ -1,5 +1,5 @@
 --if OS == nil then OS, fver, OSDIR = true, {}, "Z:\\Lua\\MQTT_HL\\" ; print("running on OS") end  -- initialize fver if running on OS
-local fn,fp = "main", {"0.4a","5/24/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
+local fn,fp = "main", {"0.5a","6/5/18","RLH"} if type(fver) == 'table' then fver[fn] = fp end 
 -- install helper_io 
     -- for OS testing
 function p_local_fver(fn,fp)  -- prints filename and version to output
@@ -81,8 +81,6 @@ modules = nil
 sdl, sda, ow_pin = nil, nil, nil
 WEB_CHECK = nil
 heap_load = nil
-collectgarbage('collect')        
-collectgarbage('collect')
 
 --tupdt, supdt = nil, nil 
 p_line(_,_,'Device Info')
@@ -91,7 +89,25 @@ p_line(_,_,'PINS configuration')
 p_pins(PINS,'PINS')
 p_line()
 
-collectgarbage('collect')        
-collectgarbage('collect')
+if p_fver then  p_fver() ; p_line() end
+
+--if p_status then p_line(_,_,'status'); p_status() end
+if init_clean then init_clean() ; p_line(_,_,"init_clean()") end
+tmr.alarm(TMR.dly.n, 4000, tmr.ALARM_SINGLE, function() 
+	init_clean2() 
+	p_line(_,_,"Clean complete")
+	tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, 
+		function() 
+			--MQTT = nil
+			AP = nil
+			if init_clean2 then init_clean2() end
+			p_line(_,_,"start OLED")
+            dofile("oled_loop.lc")
+            dofile('TMR_init.lua')
+            dofile('O_updt.lua')
+			dofile('updt_svr.lua')
+
+		end)
+	end)
 
  if  file.exists("main_end.lua") then dofile("main_end.lua") end

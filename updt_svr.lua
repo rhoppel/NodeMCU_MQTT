@@ -1,0 +1,8 @@
+p_line(_,_,"get input pin status")
+pins_rw(PINS)
+p_line(_,_,"Publish Node Input Info")
+mqtt_pub_smsg(P_TOP.data,'pins',PINS)
+p_line(_,_,"Publish Heap Info")
+mqtt_pub_smsg(P_TOP.data,'heap',node.heap())
+p_line(_,_,"Publish Node Input Info")
+mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
