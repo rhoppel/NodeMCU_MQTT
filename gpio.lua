@@ -13,10 +13,7 @@ if p_local_fver == nil then dofile("p_local_fver.lua") end
 	  if T[i].pwm then 
 		print("pwmG: ",i, "start: ",s )
 		if s == nil  then 
---			local f = T[i].freq or 500--
---			local d = T[i].duty or 512
---			pwm.setup(i,f,d) 
-			print("pwmG[setup]: ",i,"pwm: ",T[i].pwm, "freq: ",T[i].freq,"duty: ",T[i].duty )
+--			print("pwmG[setup]: ",i,"pwm: ",T[i].pwm, "freq: ",T[i].freq,"duty: ",T[i].duty )
 			pwm.setup(i,T[i].freq or 500,T[i].duty or 512) 
 		elseif s == true then pwm.start(i)
 		elseif s == false then pwm.stop(i)
@@ -27,7 +24,7 @@ if p_local_fver == nil then dofile("p_local_fver.lua") end
 	end
 
 end
-
+--[[
  function pins_mode(T)
 	local i 
 	for i = 0 ,D.pins -1  do
@@ -41,8 +38,9 @@ end
 	end
 
 end
-
-pins_mode(PINS)
+]]
+dofile("pins_mode.lua")
+--pins_mode(PINS)
 --pins_mode = nil -- remove after using
 
 function pins_rw()

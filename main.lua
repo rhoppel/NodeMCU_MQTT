@@ -85,15 +85,17 @@ heap_load = nil
 --tupdt, supdt = nil, nil 
 p_line(_,_,'Device Info')
 p_dinfo()
-p_line(_,_,'PINS configuration')
-p_pins(PINS,'PINS')
+if not file.exists("PINS.json") then
+    p_line(_,_,'PINS configuration')
+    p_pins(PINS,'PINS')
+end
 p_line()
 
 if p_fver then  p_fver() ; p_line() end
 
 --if p_status then p_line(_,_,'status'); p_status() end
 if init_clean then init_clean() ; p_line(_,_,"init_clean()") end
-tmr.alarm(TMR.dly.n, 4000, tmr.ALARM_SINGLE, function() 
+tmr.alarm(TMR.dly.n, 2000, tmr.ALARM_SINGLE, function() 
 	init_clean2() 
 	p_line(_,_,"Clean complete")
 	tmr.alarm(TMR.dly.n, 500, tmr.ALARM_SINGLE, 
@@ -103,11 +105,40 @@ tmr.alarm(TMR.dly.n, 4000, tmr.ALARM_SINGLE, function()
 			if init_clean2 then init_clean2() end
 			p_line(_,_,"start OLED")
             dofile("oled_loop.lc")
-            dofile('TMR_init.lua')
-            dofile('O_updt.lua')
-			dofile('updt_svr.lua')
+            --dofile('TMR_init.lua')
+            p_line(_,_,"start timers")
+            tmr_rst('rp')
+            tmr_rst('t')
+            tmr_rst('scrn')
+            TMR.heap.t, TMR.heap.f = 60000, node.heap
+            tmr_rst('heap')
 
+            --dofile('O_updt.lua')
+            dofile('read_json.lc')
+            local X = oo('PINS.json')
+            if X then 
+				p_line(_,_,'PINS config from JSON')
+                pins_config(PINS,X)
+                pins_config = nil
+                X = nil
+                dofile("pins_mode.lua");
+                dofile("p_pins.lc") 
+			end
+			p_line(_,_,'Message from JSON')			
+            M = oo("M.json",false)
+            oo = nil
+            print("M(type): ",type(M))
+            if M then D.screen = 'msg' ; screens() end
+            --dofile('updt_svr.lua')
+            p_line(_,_,"get input pin status")
+            pins_rw(PINS)
+            p_line(_,_,"Publish Node Input Info")
+            mqtt_pub_smsg(P_TOP.data,'pins',PINS)
+            p_line(_,_,"Publish Heap Info")
+            mqtt_pub_smsg(P_TOP.data,'heap',node.heap())
+            p_line(_,_,"Publish Node Input Info")
+            mqtt_pub_smsg(P_TOP.data, "ipins", pins_msg(PINS))
 		end)
 	end)
 
- if  file.exists("main_end.lua") then dofile("main_end.lua") end
+ --if  file.exists("main_end.lua") then dofile("main_end.lua") end

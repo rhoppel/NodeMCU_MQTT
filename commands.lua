@@ -3,7 +3,8 @@ if p_local_fver ~= nil then p_local_fver(fn,fp) end
 
 function cmd_process(C)
 	if type(C.cmd) == 'string' then 
-		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins);pins_mode(PINS)
+		if 	   C.cmd == "pins_config" then dofile("pins_config.lc"); pins_config(PINS,C.pins);dofile("pins_mode.lua"); pins_config = nil
+--		if 	   C.cmd == "pins_config" then pins_config(PINS,C.pins);dofile("pins_mode.lua")
 		elseif C.cmd == "pwm"	then pwmG(PINS,C.pin,C.start)
 		elseif C.cmd == "adc"	then  D.adc = adc.read(0); mqtt_pub_smsg(P_TOP.data,'adc',D.adc)
 		elseif C.cmd == "uart_write" then uart.write(0,C.uart_write)
@@ -18,7 +19,7 @@ function cmd_process(C)
 		elseif C.cmd == "DEBUG"	then D.dbg = not D.dbg
 		elseif C.cmd == "t_cal"	then D.t_cal = C.t_cal 
 		elseif C.cmd == "name"	then D.name = C.name
-		elseif C.cmd == "fileOp" then fileOp(C.file)
+		elseif C.cmd == "fileOp" then dofile("fileOp.lc"); fileOp(C.file); fileOp = nil
 		elseif C.cmd == "msg" then local x = C.msg 
 			if type(x) == 'table' or (type(x) == 'string' and string.len(x) >= 1 ) then 
 				M = x; scrn_io('msg')
@@ -35,11 +36,13 @@ function cmd_process(C)
 end
 
 -- commands
+--[[
 function fileOp(U)
-	local o, f, O, p = U.op, U.f, U.o, U.p  -- operation, filename, object name, payload
-	local T,pl,isJSON = nil,nil,false
 	local fnf = "file not found"
 	local s = "Success!"
+	local o, f, O, p = U.op, U.f, U.o, U.p  -- operation, filename, object name, payload
+	local T,pl,isJSON = nil,fnf,false
+
 	if f and string.find(f,".json") then isJSON = true end -- test if filename is JSON
 	if O then 
 		if     O == "MQTT" then T = MQTT
@@ -52,24 +55,20 @@ function fileOp(U)
 	end
 
 	if     o == "d" and file.exists(f) then file.remove(f); pl = s -- delete file on Device
-	elseif o == "d" then pl = fnf
 	elseif o == "l" then pl = file.list(); f = "file list" ; isJSON = true -- list files and return value
 	elseif o == "ren" then 
-		if file.exists(f) then file.rename(f,U.f2) ; pl = s
-		else pl = fnf
-		end
+		if file.exists(f) then file.rename(f,U.f2) ; pl = s end
 	elseif o == "r" or o == "w"  or o == "c" then 
 			file.open(f,o);
 			if o == 'w' then 
 				if not p and T then p = sjson.encode(T) end
-				print("fileOp:", "p:",p)
+				--print("fileOp:", "p:",p)
 				file.write(p)
 				pl = s
 			end
 			if o == 'r' or o == 'c' then 
 				if file.exists(f) then 
 					pl = file.read()
-                    print(pl)
 					if o == "c" then 
 						file.close()
 						file.open(U.f2,"w")
@@ -78,7 +77,6 @@ function fileOp(U)
 						isJSON = false
 					end
 					if isJSON then pl = sjson.decode(pl) end-- decode json file
-				else pl = fnf
 				end
 			end
 			file.close()
@@ -89,7 +87,7 @@ function fileOp(U)
 	if pl  then  mqtt_pub_smsg(P_TOP.data,'files',msg) end
 	
 end
-
+]]
 -- alternate between the possible OLED screen modes 
 function  scrn_io(s) 
 	tmr_rst('scrn') 

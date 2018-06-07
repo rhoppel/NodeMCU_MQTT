@@ -2,7 +2,7 @@ local fn,fp = "config", {"0.9e","6/5/18","RLH"} if type(fver) == 'table' then fv
 if p_local_fver == nil then dofile("p_local_fver.lua") end
 p_local_fver(fn,fp) --;print("config:(heap)",node.heap())
 
-local fn = "read_json.lua"
+local fn = "read_json.lc"
 if file.exists(fn) then dofile(fn) end
 
 NODEMCU = {}
